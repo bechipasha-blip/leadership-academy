@@ -103,6 +103,27 @@ export const courses: Course[] = [
   },
 ];
 
+export const courseStats = [
+  { label: "Active learners", value: "1,284" },
+  { label: "Completion rate", value: "89%" },
+  { label: "Mentors online", value: "46" },
+  { label: "Avg. assessment", value: "91%" },
+];
+
+export const teamMembers = [
+  { name: "Ava Nguyen", role: "Senior operations leader", score: 94 },
+  { name: "Marcus Lee", role: "People manager", score: 90 },
+  { name: "Priya Solanki", role: "Program lead", score: 88 },
+  { name: "Daniel Brooks", role: "Team director", score: 86 },
+];
+
+export const assessments = [
+  { title: "Conflict Resolution", score: 88, status: "Strong" },
+  { title: "Decision Quality", score: 93, status: "Excellent" },
+  { title: "Delegation Readiness", score: 79, status: "Improving" },
+  { title: "Executive Presence", score: 85, status: "Strong" },
+];
+
 export function getCourseBySlug(slug: string) {
   return courses.find((course) => course.slug === slug);
 }
