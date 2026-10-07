@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String           @id @default(cuid())
+  email         String           @unique
+  name          String?
+  role          Role             @default(LEARNER)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  enrollments   Enrollment[]
+  submissions   QuizSubmission[]
+  feedbackGiven Feedback[]
+  mentorSession MentorSession[]
+  learnerSession MentorSession[] @relation("LearnerSessions")
+}
+
+enum Role {
+  LEARNER
+  COACH
+  ADMIN
+}
+
+model Course {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  slug        String      @unique
+  level       String      @default("Intermediate")
+  createdAt   DateTime    @default(now())
+  modules     Module[]
+  enrollments Enrollment[]
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  order       Int
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String     @id @default(cuid())
+  title       String
+  content     String?
+  videoUrl    String?
+  order       Int
+  moduleId    String
+  module      Module     @relation(fields: [moduleId], references: [id])
+  progress    Progress[]
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String
+  joinedAt  DateTime @default(now())
+  progress  Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+}
+
+model Progress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  lesson      Lesson    @relation(fields: [lessonId], references: [id])
+
+  @@unique([userId, lessonId])
+}
+
+model Quiz {
+  id          String            @id @default(cuid())
+  title       String
+  description String?
+  questions   QuizQuestion[]
+  submissions QuizSubmission[]
+}
+
+model QuizQuestion {
+  id       String  @id @default(cuid())
+  quizId   String
+  prompt   String
+  options  String[]
+  answer   String
+  quiz     Quiz    @relation(fields: [quizId], references: [id])
+}
+
+model QuizSubmission {
+  id          String   @id @default(cuid())
+  quizId      String
+  userId      String
+  score       Int
+  submittedAt DateTime @default(now())
+  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Feedback {
+  id          String   @id @default(cuid())
+  fromUserId  String
+  toUserId    String
+  comment     String
+  createdAt   DateTime @default(now())
+  fromUser    User     @relation(fields: [fromUserId], references: [id])
+  toUser      User     @relation(fields: [toUserId], references: [id])
+}
+
+model MentorSession {
+  id          String   @id @default(cuid())
+  mentorId    String
+  learnerId   String
+  scheduledAt DateTime
+  notes       String?
+  mentor      User     @relation(fields: [mentorId], references: [id])
+  learner     User     @relation("LearnerSessions", fields: [learnerId], references: [id])
+}
