@@ -5,21 +5,21 @@ const plans = [
     name: "Starter",
     price: "$29",
     description: "For individuals building leadership fundamentals.",
-    features: ["Access to 3 core tracks", "Progress tracking", "Skill assessments", "Email support"],
+    features: ["3 core leadership tracks", "Progress tracking", "Skill assessments", "Email support"],
     featured: false,
   },
   {
     name: "Growth",
     price: "$79",
-    description: "For managers and team leads scaling coaching capability.",
-    features: ["Everything in Starter", "All leadership tracks", "Mentor sessions", "Advanced analytics", "Certification badges"],
+    description: "For managers who want coaching, analytics, and certifications.",
+    features: ["Everything in Starter", "Full course library", "Certification paths", "Advanced analytics"],
     featured: true,
   },
   {
     name: "Enterprise",
     price: "Custom",
-    description: "For organizations rolling out leadership development to teams.",
-    features: ["Custom rollout plan", "Team dashboards", "API access", "Dedicated support", "Executive reporting"],
+    description: "For organizations scaling leadership development across teams.",
+    features: ["Team onboarding", "Admin dashboards", "Progress reporting", "Dedicated support"],
     featured: false,
   },
 ];
@@ -38,7 +38,7 @@ export default function PricingPage() {
         {plans.map((plan) => (
           <div key={plan.name} className={`price-card ${plan.featured ? "featured" : ""}`}>
             <div className="price-topline">
-              <h2>{plan.name}</h2>
+              <h3>{plan.name}</h3>
               {plan.featured ? <span className="popular-tag">Most popular</span> : null}
             </div>
             <div className="price-row">
