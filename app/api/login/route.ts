@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isValidDemoLogin } from "@/lib/auth";
+import { getRoleFromEmail, isValidDemoLogin } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -10,15 +10,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "A valid email and password are required." }, { status: 400 });
   }
 
-  const valid = isValidDemoLogin(email, password);
-
-  if (!valid) {
-    return NextResponse.json({ message: "Invalid email or password. Try the demo credentials below." }, { status: 401 });
+  if (!isValidDemoLogin(email, password)) {
+    return NextResponse.json({ message: "Invalid email or password. Try one of the demo credentials below." }, { status: 401 });
   }
 
-  const response = NextResponse.json({ ok: true, user: { email } }, { status: 200 });
+  const role = getRoleFromEmail(email);
+  const response = NextResponse.json({ ok: true, user: { email, role } }, { status: 200 });
 
-  response.cookies.set("leadership_session", "active", {
+  response.cookies.set("leadership_session", role ?? "leader", {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",

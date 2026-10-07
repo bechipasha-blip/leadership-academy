@@ -1,6 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function AdminPage() {
+  const [user, setUser] = useState<{ name?: string; role?: string } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/session")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user ?? null))
+      .catch(() => setUser(null));
+  }, []);
+
   return (
     <main className="page-shell narrow-shell">
       <div className="section-header">
@@ -12,6 +24,14 @@ export default function AdminPage() {
           <Link href="/dashboard" className="secondary-button">Team dashboard</Link>
           <Link href="/login" className="secondary-button">Sign out</Link>
         </div>
+      </div>
+
+      <div className="user-banner admin-banner">
+        <div>
+          <span className="eyebrow">Current admin</span>
+          <h2>{user?.name ?? "Elena Vasquez"}</h2>
+        </div>
+        <p>{user?.role === "admin" ? "Administrator access enabled" : "Demo access"}</p>
       </div>
 
       <div className="stats-grid admin-grid">

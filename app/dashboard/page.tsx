@@ -1,8 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+type User = {
+  name: string;
+  email: string;
+  role: string;
+};
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    fetch("/api/session")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user ?? null))
+      .catch(() => setUser(null));
+  }, []);
 
   async function handleSignOut() {
     await fetch("/api/logout", { method: "POST" });
@@ -18,13 +35,20 @@ export default function DashboardPage() {
           <h1>Your leadership dashboard</h1>
         </div>
         <div className="header-actions">
-          <Link href="/assessments" className="secondary-button">
-            Assessments
-          </Link>
-          <button type="button" className="secondary-button" onClick={handleSignOut}>
-            Sign out
-          </button>
+          <Link href="/assessments" className="secondary-button">Assessments</Link>
+          {user?.role === "admin" ? (
+            <Link href="/admin" className="secondary-button">Admin</Link>
+          ) : null}
+          <button type="button" className="secondary-button" onClick={handleSignOut}>Sign out</button>
         </div>
+      </div>
+
+      <div className="user-banner">
+        <div>
+          <span className="eyebrow">Signed in as</span>
+          <h2>{user?.name ?? "Team leader"}</h2>
+        </div>
+        <p>{user?.email ?? "manager@leadership.academy"}</p>
       </div>
 
       <div className="stats-grid dashboard-stats">

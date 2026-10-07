@@ -77,7 +77,8 @@ input {
 .section-header h1,
 .course-hero h1,
 .content-panel h2,
-.auth-card h1 {
+.auth-card h1,
+.user-banner h2 {
   margin: 0;
   color: #f7f9fd;
 }
@@ -104,7 +105,8 @@ input {
 .course-card p,
 .module-card p,
 .lead-copy,
-.auth-card p {
+.auth-card p,
+.user-banner p {
   color: #b3bfd3;
   line-height: 1.7;
   font-size: 1.08rem;
@@ -153,7 +155,8 @@ input {
 .module-card,
 .stat-box,
 .auth-card,
-.assessment-card {
+.assessment-card,
+.user-banner {
   background: rgba(15, 23, 42, 0.82);
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 22px;
@@ -250,6 +253,20 @@ input {
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.user-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.admin-banner {
+  background: rgba(91, 110, 246, 0.08);
+  border-color: rgba(91, 110, 246, 0.32);
 }
 
 .dashboard-stats {
@@ -484,7 +501,8 @@ th {
 
   .topbar,
   .section-header,
-  .course-hero {
+  .course-hero,
+  .user-banner {
     flex-direction: column;
     align-items: flex-start;
   }
