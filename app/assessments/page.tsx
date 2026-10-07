@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { assessments } from "@/lib/data";
 
 export default function AssessmentsPage() {
   return (
@@ -9,16 +8,22 @@ export default function AssessmentsPage() {
           <span className="eyebrow">Assessments</span>
           <h1>Leadership skill checks</h1>
         </div>
-        <Link href="/dashboard" className="secondary-button">
-          Return to dashboard
-        </Link>
+        <div className="header-actions">
+          <Link href="/dashboard" className="secondary-button">Dashboard</Link>
+          <Link href="/login" className="secondary-button">Sign out</Link>
+        </div>
       </div>
 
       <section className="content-panel">
         <h2>Recent evaluations</h2>
 
         <div className="stack-list">
-          {assessments.map((assessment) => (
+          {[
+            { title: "Conflict Resolution", score: 88, status: "Strong" },
+            { title: "Decision Quality", score: 93, status: "Excellent" },
+            { title: "Delegation Readiness", score: 79, status: "Improving" },
+            { title: "Executive Presence", score: 85, status: "Strong" },
+          ].map((assessment) => (
             <div key={assessment.title} className="assessment-card">
               <div className="assessment-topline">
                 <div>

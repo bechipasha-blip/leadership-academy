@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { courseStats, teamMembers } from "@/lib/data";
 
 export default function AdminPage() {
   return (
@@ -9,13 +8,19 @@ export default function AdminPage() {
           <span className="eyebrow">Admin</span>
           <h1>Leadership operations</h1>
         </div>
-        <Link href="/dashboard" className="secondary-button">
-          Team dashboard
-        </Link>
+        <div className="header-actions">
+          <Link href="/dashboard" className="secondary-button">Team dashboard</Link>
+          <Link href="/login" className="secondary-button">Sign out</Link>
+        </div>
       </div>
 
       <div className="stats-grid admin-grid">
-        {courseStats.map((item) => (
+        {[
+          { label: "Active learners", value: "1,284" },
+          { label: "Completion rate", value: "89%" },
+          { label: "Mentors online", value: "46" },
+          { label: "Avg. assessment", value: "91%" },
+        ].map((item) => (
           <div key={item.label} className="stat-box">
             <span>{item.label}</span>
             <strong>{item.value}</strong>
@@ -25,7 +30,6 @@ export default function AdminPage() {
 
       <section className="content-panel">
         <h2>Leader performance</h2>
-
         <div className="table-shell">
           <table>
             <thead>
@@ -37,7 +41,12 @@ export default function AdminPage() {
               </tr>
             </thead>
             <tbody>
-              {teamMembers.map((member) => (
+              {[
+                { name: "Ava Nguyen", role: "Senior operations leader", score: 94 },
+                { name: "Marcus Lee", role: "People manager", score: 90 },
+                { name: "Priya Solanki", role: "Program lead", score: 88 },
+                { name: "Daniel Brooks", role: "Team director", score: 86 },
+              ].map((member) => (
                 <tr key={member.name}>
                   <td>{member.name}</td>
                   <td>{member.role}</td>
