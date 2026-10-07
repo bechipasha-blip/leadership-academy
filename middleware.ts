@@ -5,13 +5,14 @@ export function middleware(request: NextRequest) {
   const protectedPaths = ["/dashboard", "/admin", "/assessments"];
   const isProtected = protectedPaths.some((path) => request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith(`${path}/`));
   const isLogin = request.nextUrl.pathname === "/login";
+  const session = request.cookies.get("leadership_session")?.value;
 
-  if (isProtected && !request.cookies.get("leadership_session")) {
+  if (isProtected && session !== "active") {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isLogin && request.cookies.get("leadership_session")) {
+  if (isLogin && session === "active") {
     const dashboardUrl = new URL("/dashboard", request.url);
     return NextResponse.redirect(dashboardUrl);
   }

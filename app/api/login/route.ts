@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isValidDemoLogin } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -7,6 +8,12 @@ export async function POST(request: Request) {
 
   if (!email || !password || !email.includes("@")) {
     return NextResponse.json({ message: "A valid email and password are required." }, { status: 400 });
+  }
+
+  const valid = isValidDemoLogin(email, password);
+
+  if (!valid) {
+    return NextResponse.json({ message: "Invalid email or password. Try the demo credentials below." }, { status: 401 });
   }
 
   const response = NextResponse.json({ ok: true, user: { email } }, { status: 200 });
